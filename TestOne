@@ -1,0 +1,7 @@
+packege ...TestRepository1/TestOne;
+
+public class TestOne{
+  public static void main (String [] args){
+  System.out.println("Тестовая строка.");
+  }
+}

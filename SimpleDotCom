@@ -1,6 +1,7 @@
 //пробная программа
 
-public class SimpleDotComTestDrive { //основной класс для запуска
+//основной класс для запуска
+public class SimpleDotComTestDrive { 
   public static void main (String [] args){
     SimpleDotCom dot = new SimpleDotCom();
     int[] locations = {2,3,4};
@@ -10,7 +11,8 @@ public class SimpleDotComTestDrive { //основной класс для зап
   }
 }
 
-public class SimpleDotCom {   // и ещё какойто, обработка результата
+// и ещё какойто, обработка результата
+public class SimpleDotCom {   
   int[] locationCells;
   int numOfHits = 0;
   
@@ -35,4 +37,21 @@ public class SimpleDotCom {   // и ещё какойто, обработка р
     System.out.println(result);
      return result;
   }
+}
+
+ // готовый код на проверку мезанизма игры
+import java.io*
+public class GameHelper {
+ public String getUserInput(String prompt){
+  String inputLine = null;
+  System.out.print(prompt + " ");
+  try {
+   BufferedReader is = new BufferedReader(new InputStreemReader(System.in));
+   input:ine = is.readLine();
+   if (inputLine.length() == 0) return null;
+  } catch (IOException e){
+   System.out.println("IOException: " + e);
+  }
+  return inputLine;
+ }
 }

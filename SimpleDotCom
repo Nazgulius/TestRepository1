@@ -1,122 +1,213 @@
-//пробная программа
+package MyTest.Test1ShipWar;
 
-//основной класс для запуска
-public class SimpleDotComTestDrive { 
-  public static void main (String [] args){
-    DotCom dot = new DotCom();
-    int[] locations = {2,3,4};
-    dot.setLocationCells (locations);
-    String userGuess = "2";
-    String result = dot.checkYourself(userGuess);
-  }
-}
 
-// обработка результата
 import java.util.*;
 
-public class DotCom {   
-  private ArrayList<String> locationCells;
-  private String name;
-  
-  public void setLocationCells(ArrayList<String> loc){
-    locationCells = loc;
-  }
-  
-  public void setName(String n){
-  name = n;
-  }
-  
-  public String checkYourself(String userInput){
-    
-    String result = "Мимо";
-    int index = locationCells.indexOf(userInput);
-    if (index >= 0){
-      locationCells.remove(index);
-      
-      if(locationCells.isEmpty()){
-      result = "Потопил";
-      System.out.println("Ой! Вы потопили " + name + "  :( ");
-      } else {
-      result = "Попал";
-      }
+//основной класс для запуска
+
+
+public class ShipWarTestDrive  {
+    private GameHelper helper = new GameHelper();
+    private ArrayList<ShipWar> shipList = new ArrayList<ShipWar>();
+    private int numOfGuesses = 0;
+
+    private void setUpGame (){
+        //Создаём несколько кораблей и назовём их
+        ShipWar one = new ShipWar();
+        one.setName("Автора");
+        ShipWar two = new ShipWar();
+        two.setName("Лёша");
+        ShipWar three = new ShipWar();
+        three.setName("Паша");
+        shipList.add(one);
+        shipList.add(two);
+        shipList.add(three);
+
+        System.out.println("Цель игры - потопить три корабля.");
+        System.out.println("Аврора, Лёша, Паша");
+        System.out.println("Попытайтесь потопись их за минимальное количество ходов");
+
+        for (ShipWar shipWarToSet : shipList){
+            ArrayList<String> newLocation = helper.placeDotCom(3); // Изменить placeDotCom на корабельную тему
+            shipWarToSet.setLocationCells(newLocation);
+        }
+    } //конец метода setUpdate
+
+    private void startPlaying(){
+        while (!shipList.isEmpty()){
+            String userGuess = helper.getUserInput("Сделайте ход");
+            checkUserGuess(userGuess);
+        }
+        finishGame();
+    } // Конец метода startPlaying
+
+    private void checkUserGuess (String userGuess){
+        numOfGuesses++;
+        String result = "Мимо";
+        for (ShipWar shipWarToTest : shipList){
+            result = shipWarToTest.checkYourself(userGuess);
+            if (result.equals("Попал")){
+                break;
+            }
+            if (result.equals("Потопил")){
+                shipList.remove(shipWarToTest);
+                break;
+            }
+        }
+    } // Конец метода checkUserGuess
+
+    private void finishGame (){
+        System.out.println("Все кораблти ушли ко дну! Вашим людям теперь ничего не угрожает.");
+        if (numOfGuesses <= 18){
+        System.out.println("Это заняло у вас всего " + numOfGuesses + " попыток.");
+        System.out.println("Вы успели выбраться до того, как был нанесён ракетный удар.");
+        } else {
+        System.out.println("Это заняло у вас довльно много времени. " + numOfGuesses + " попыток.");
+        System.out.println("Рыбы водят хоровод вокруг ваших пузырей.");
+        }
+    } // Конец метода finishGame
+
+    public  static void main (String[] args){
+        ShipWarTestDrive game = new ShipWarTestDrive();
+        game.setUpGame();
+        game.startPlaying();
+    }  // Конец метода main
+
+//Первый вариант для проверки механизма игры
+/*
+    public static void main (String [] args) throws Exception{
+        ShipWar ship = new ShipWar();
+        ArrayList<String> locations = new ArrayList<String>();
+        locations.add("2");
+        locations.add("3");
+        locations.add("4");
+        ship.setLocationCells (locations);
+        System.out.println("Можно начинать вводить координаты:");
+        String res = "";
+        while (!(res.equals("THE END"))){
+            BufferedReader reader = new BufferedReader (new InputStreamReader(System.in));
+            String userGuess = reader.readLine();
+            String result = ship.checkYourself(userGuess);
+            System.out.println(result);
+            res = result;
+        }
     }
-    
-    
-     return result;
-  }
+*/
 }
 
- // готовый код на проверку мезанизма игры
-import java.io*
-import java.util.*
+
+-------------------------------------------------------------------------------
+package MyTest.Test1ShipWar;
+
+import java.io.*;
+import java.util.*;
+
+// Класс помошник, импортирован без исправлений
 
 public class GameHelper {
- ptivate static final String alphabet = "abcdefg";
- ptivate int gridLength = 7;
- private int gridSiza = 49;
- private int [] grid = new int[gridSize];
- private int comCount = 0;
- 
- public String getUserInput(String prompt){
-  String inputLine = null;
-  System.out.print(prompt + " ");
-  try {
-   BufferedReader is = new BufferedReader(new InputStreemReader(System.in));
-   input:ine = is.readLine();
-   if (inputLine.length() == 0) return null;
-  } catch (IOException e){
-   System.out.println("IOException: " + e);
-  }
-  return inputLine.toLowerCase();
- }
- public ArrayList<String> placeDotCom(int comSize){
- ArrayList<String> alphaCells = new ArrayList<String>();
- String [] alphacoords = new int[comSize];
- String temp = null;
- int [] cootds = new int[comSize];
- int attempts = 0;
- boolean success = false;
- int location = 0;
- 
- comCount++;
- int incr = 1;
- if ((comCount % 2) == 1){
-  incr = gridLength;
- }
- 
- while (!success & attempts++ < 200){
-  location = (int) (Math.random() * gridSize);
-  int x = 0;
-  success = true;
-  while (success && x < comSize){
-   if(grid[location] == 0){
-   coords[x++] = location;
-   location += incr;
-   if(location >= gridSize){
-    success = false;
-   }
-   if(x>0 && (location % gridLength == 0)){
-   success = false;
-   }
-   }
-   else {success = false;}
-  }
- }
- 
- int x = 0;
- int row = 0;
- int column = 0;
- 
- while (x < comSize){
-  grid[coords[x]] = 1;
-  row = (int) (coords[x] / gridLength);
-  column = coords[x] % gridLength;
-  temp = String.valueOf(alphabet.charAt(column));
-  
-  alphaCells.add(temp.concat(Integer.toString(row)));
-  x++;
-  //System.out.print(" coord " + x + " = " + alphaCells.get(x-1)); //это выражение показывает, где находится сайт(корабль)
- }
- return alphaCells;
- }
+    private static final String alphabet = "abcdefg";
+    private int gridLength = 7;
+    private int gridSize = 49;
+    private int [] grid = new int[gridSize];
+    private int comCount = 0;
+
+    public String getUserInput(String prompt){
+        String inputLine = null;
+        System.out.print(prompt + " ");
+        try {
+            BufferedReader is = new BufferedReader(new InputStreamReader(System.in));
+            inputLine = is.readLine();
+            if (inputLine.length() == 0) return null;
+        } catch (IOException e){
+            System.out.println("IOException: " + e);
+        }
+        return inputLine.toLowerCase();
+    }
+
+    public ArrayList<String> placeDotCom(int comSize){
+        ArrayList<String> alphaCells = new ArrayList<String>();
+        String [] alphacoords = new String[comSize];
+        String temp = null;
+        int [] coords = new int[comSize];
+        int attempts = 0;
+        boolean success = false;
+        int location = 0;
+        comCount++;
+        int incr = 1;
+        if ((comCount % 2) == 1){
+            incr = gridLength;
+        }
+
+        while (!success & attempts++ < 200){
+            location = (int) (Math.random() * gridSize);
+            int x = 0;
+            success = true;
+            while (success && x < comSize){
+                if(grid[location] == 0){
+                    coords[x++] = location;
+                    location += incr;
+                    if(location >= gridSize){
+                        success = false;
+                    }
+                    if(x>0 && (location % gridLength == 0)){
+                        success = false;
+                    }
+                }
+                else {success = false;}
+            }
+        }
+        int x = 0;
+        int row = 0;
+        int column = 0;
+        while (x < comSize){
+            grid[coords[x]] = 1;
+            row = (int) (coords[x] / gridLength);
+            column = coords[x] % gridLength;
+            temp = String.valueOf(alphabet.charAt(column));
+            alphaCells.add(temp.concat(Integer.toString(row)));
+            x++;
+
+//System.out.print(" coord " + x + " = " + alphaCells.get(x-1)); //это выражение показывает, где находится сайт(корабль)
+
+        }
+
+        return alphaCells;
+
+    }
+}
+
+-------------------------------------------------------------------------------
+package MyTest.Test1ShipWar;
+
+import java.util.*;
+
+// Механика игры
+
+class ShipWar
+{
+    private ArrayList<String> locationCells;
+    private String name;
+
+    public void setLocationCells(ArrayList<String> loc){
+        locationCells = loc;
+    }
+
+    public void setName(String n){
+        name = n;
+    }
+
+    public String checkYourself(String userInput){
+        String result = "Мимо";
+        int index = locationCells.indexOf(userInput);
+        if (index >= 0){
+            locationCells.remove(index);
+            if(locationCells.isEmpty()){
+                result = "Потопил";
+                System.out.println("Ой! Вы потопили корабль " + name + " :( ");
+            } else {
+                result = "Попал";
+            }
+        }
+        return result;
+    }
 }

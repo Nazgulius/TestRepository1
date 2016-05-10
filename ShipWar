@@ -1,10 +1,8 @@
 package MyTest.Test1ShipWar;
 
-
 import java.util.*;
 
 //основной класс для запуска
-
 
 public class ShipWarTestDrive  {
     private GameHelper helper = new GameHelper();
@@ -28,7 +26,7 @@ public class ShipWarTestDrive  {
         System.out.println("Попытайтесь потопись их за минимальное количество ходов");
 
         for (ShipWar shipWarToSet : shipList){
-            ArrayList<String> newLocation = helper.placeDotCom(3); // Изменить placeDotCom на корабельную тему
+            ArrayList<String> newLocation = helper.placeShipWar(3);
             shipWarToSet.setLocationCells(newLocation);
         }
     } //конец метода setUpdate
@@ -95,7 +93,6 @@ public class ShipWarTestDrive  {
 */
 }
 
-
 -------------------------------------------------------------------------------
 package MyTest.Test1ShipWar;
 
@@ -109,7 +106,7 @@ public class GameHelper {
     private int gridLength = 7;
     private int gridSize = 49;
     private int [] grid = new int[gridSize];
-    private int comCount = 0;
+    private int shipCount = 0;
 
     public String getUserInput(String prompt){
         String inputLine = null;
@@ -124,17 +121,17 @@ public class GameHelper {
         return inputLine.toLowerCase();
     }
 
-    public ArrayList<String> placeDotCom(int comSize){
+    public ArrayList<String> placeShipWar(int shipSize){
         ArrayList<String> alphaCells = new ArrayList<String>();
-        String [] alphacoords = new String[comSize];
+        String [] alphacoords = new String[shipSize];
         String temp = null;
-        int [] coords = new int[comSize];
+        int [] coords = new int[shipSize];
         int attempts = 0;
         boolean success = false;
         int location = 0;
-        comCount++;
+        shipCount++;
         int incr = 1;
-        if ((comCount % 2) == 1){
+        if ((shipCount % 2) == 1){
             incr = gridLength;
         }
 
@@ -142,7 +139,7 @@ public class GameHelper {
             location = (int) (Math.random() * gridSize);
             int x = 0;
             success = true;
-            while (success && x < comSize){
+            while (success && x < shipSize){
                 if(grid[location] == 0){
                     coords[x++] = location;
                     location += incr;
@@ -159,7 +156,7 @@ public class GameHelper {
         int x = 0;
         int row = 0;
         int column = 0;
-        while (x < comSize){
+        while (x < shipSize){
             grid[coords[x]] = 1;
             row = (int) (coords[x] / gridLength);
             column = coords[x] % gridLength;

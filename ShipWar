@@ -10,7 +10,7 @@ public class ShipWarTestDrive  {
     private int numOfGuesses = 0;
 
     private void setUpGame (){
-        //Создаём несколько кораблей и назовём их
+        //Создаём несколько кораблей и называем их
         ShipWar one = new ShipWar();
         one.setName("Автора");
         ShipWar two = new ShipWar();
@@ -22,7 +22,7 @@ public class ShipWarTestDrive  {
         shipList.add(three);
 
         System.out.println("Цель игры - потопить три корабля.");
-        System.out.println("Аврора, Лёша, Паша");
+        System.out.println("Аврора, Лёша, Паша.");
         System.out.println("Попытайтесь потопись их за минимальное количество ходов");
 
         for (ShipWar shipWarToSet : shipList){
@@ -55,13 +55,13 @@ public class ShipWarTestDrive  {
     } // Конец метода checkUserGuess
 
     private void finishGame (){
-        System.out.println("Все кораблти ушли ко дну! Вашим людям теперь ничего не угрожает.");
-        if (numOfGuesses <= 18){
+        System.out.println("Все кораблти ушли ко дну! Ваши люди теперь могут спокойно уплыть.");
+        if (numOfGuesses <= 25){
         System.out.println("Это заняло у вас всего " + numOfGuesses + " попыток.");
-        System.out.println("Вы успели выбраться до того, как был нанесён ракетный удар.");
+        System.out.println("Вы успели выбраться до того, как были уничтожены.");
         } else {
-        System.out.println("Это заняло у вас довльно много времени. " + numOfGuesses + " попыток.");
-        System.out.println("Рыбы водят хоровод вокруг ваших пузырей.");
+        System.out.println("Это заняло у вас довольно много времени. " + numOfGuesses + " попыток.");
+        System.out.println("Ваши люди покоятся на дне морском.");
         }
     } // Конец метода finishGame
 
@@ -70,27 +70,6 @@ public class ShipWarTestDrive  {
         game.setUpGame();
         game.startPlaying();
     }  // Конец метода main
-
-//Первый вариант для проверки механизма игры
-/*
-    public static void main (String [] args) throws Exception{
-        ShipWar ship = new ShipWar();
-        ArrayList<String> locations = new ArrayList<String>();
-        locations.add("2");
-        locations.add("3");
-        locations.add("4");
-        ship.setLocationCells (locations);
-        System.out.println("Можно начинать вводить координаты:");
-        String res = "";
-        while (!(res.equals("THE END"))){
-            BufferedReader reader = new BufferedReader (new InputStreamReader(System.in));
-            String userGuess = reader.readLine();
-            String result = ship.checkYourself(userGuess);
-            System.out.println(result);
-            res = result;
-        }
-    }
-*/
 }
 
 -------------------------------------------------------------------------------
